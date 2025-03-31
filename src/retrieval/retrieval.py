@@ -91,7 +91,7 @@ class Retriever:
             rerank_model_name, 
             device=CONFIG["device"],
             max_length=max_length,
-            default_activation_function=None  # Let the model decide based on its training
+            activation_fn=None  # Let the model decide based on its training
         )
         
     def _initialize_keyword_search(self):
