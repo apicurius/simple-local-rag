@@ -52,9 +52,19 @@ class EmbeddingManager:
         
         # Handle MPS device specially - some models have issues with it
         try:
-            # Try to load directly to the specified device
-            self.model = SentenceTransformer(model_name, device=device)
-            print(f"[INFO] Successfully loaded embedding model to {device}")
+            # For Apple Silicon, verify MPS is available before using
+            if device == "mps":
+                if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                    self.model = SentenceTransformer(model_name, device=device)
+                    print(f"[INFO] Successfully loaded embedding model to {device}")
+                else:
+                    print("[WARNING] MPS requested but not available, falling back to CPU")
+                    self.model = SentenceTransformer(model_name, device="cpu")
+                    self.device = "cpu"
+            else:
+                # For other devices, try to load directly
+                self.model = SentenceTransformer(model_name, device=device)
+                print(f"[INFO] Successfully loaded embedding model to {device}")
         except Exception as e:
             # If fails, fall back to CPU
             print(f"[WARNING] Failed to load embedding model on {device}: {e}")

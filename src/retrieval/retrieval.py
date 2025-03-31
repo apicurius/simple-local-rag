@@ -86,10 +86,19 @@ class Retriever:
         else:
             # Other models might need normalization
             normalize_scores = True
+        
+        # Check device availability, especially for MPS (Apple Silicon)
+        device = CONFIG["device"]
+        if device == "mps":
+            if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                print(f"[INFO] Using MPS device for reranker")
+            else:
+                print(f"[WARNING] MPS device requested but not available, falling back to CPU for reranker")
+                device = "cpu"
             
         self.reranker = CrossEncoder(
             rerank_model_name, 
-            device=CONFIG["device"],
+            device=device,
             max_length=max_length,
             activation_fn=None  # Let the model decide based on its training
         )

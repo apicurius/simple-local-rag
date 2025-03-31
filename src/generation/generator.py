@@ -81,7 +81,15 @@ class Generator:
             # For CUDA, use device index 0
             if device == "cuda":
                 device_arg = 0
-            # For MPS or CPU, pass the device string
+            # For MPS, verify it's actually available
+            elif device == "mps":
+                if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                    device_arg = device
+                else:
+                    print("[WARNING] MPS requested but not available, falling back to CPU for pipeline")
+                    device_arg = "cpu"
+                    device = "cpu"
+            # For CPU, just use the string
             else:
                 device_arg = device
                 
