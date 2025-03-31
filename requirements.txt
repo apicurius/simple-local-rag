@@ -11,4 +11,10 @@ accelerate
 bitsandbytes
 jupyter
 wheel
+rouge-score
+scikit-learn
+nltk
+faiss-cpu
+rank_bm25
+cross-encoder==0.2.3
 # flash-attn
