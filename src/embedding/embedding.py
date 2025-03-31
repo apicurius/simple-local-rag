@@ -49,8 +49,18 @@ class EmbeddingManager:
         self.device = device
         
         print(f"[INFO] Loading embedding model '{model_name}' on {device}")
-        self.model = SentenceTransformer(model_name)
-        self.model.to(device)
+        
+        # Handle MPS device specially - some models have issues with it
+        try:
+            # Try to load directly to the specified device
+            self.model = SentenceTransformer(model_name, device=device)
+            print(f"[INFO] Successfully loaded embedding model to {device}")
+        except Exception as e:
+            # If fails, fall back to CPU
+            print(f"[WARNING] Failed to load embedding model on {device}: {e}")
+            print("[WARNING] Falling back to CPU for embedding model")
+            self.model = SentenceTransformer(model_name, device="cpu")
+            self.device = "cpu"  # Update device to reflect actual usage
         
         # Track whether embeddings have been loaded or created
         self.embeddings = None

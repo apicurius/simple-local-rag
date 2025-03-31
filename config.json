@@ -1,5 +1,5 @@
 {
-    "device": "cpu",
+    "device": "mps",
     "device_map": "auto",
     "load_in_8bit": false,
     "load_in_4bit": false,

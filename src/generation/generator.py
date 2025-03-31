@@ -57,11 +57,19 @@ class Generator:
         
         # Load the tokenizer and model
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        # Determine appropriate torch dtype based on device
+        if device == "cuda" or device == "mps":
+            dtype = torch.float16
+        else:
+            dtype = torch.float32
+            
+        print(f"[INFO] Using {dtype} precision for LLM")
+            
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device_map=CONFIG["device_map"] if device == "cuda" else None,
             quantization_config=quantization_config,
-            torch_dtype=torch.float16 if device == "cuda" else torch.float32
+            torch_dtype=dtype
         )
         
         # Move model to device if not using device_map
@@ -69,12 +77,31 @@ class Generator:
             self.model.to(device)
         
         # Create a pipeline for text generation
-        self.pipe = pipeline(
-            "text-generation",
-            model=self.model,
-            tokenizer=self.tokenizer,
-            device=0 if device == "cuda" else device
-        )
+        try:
+            # For CUDA, use device index 0
+            if device == "cuda":
+                device_arg = 0
+            # For MPS or CPU, pass the device string
+            else:
+                device_arg = device
+                
+            self.pipe = pipeline(
+                "text-generation",
+                model=self.model,
+                tokenizer=self.tokenizer,
+                device=device_arg
+            )
+            print(f"[INFO] Successfully created pipeline on {device}")
+        except Exception as e:
+            print(f"[WARNING] Error creating pipeline on {device}: {e}")
+            print("[WARNING] Falling back to CPU for pipeline")
+            # Fall back to CPU
+            self.pipe = pipeline(
+                "text-generation",
+                model=self.model,
+                tokenizer=self.tokenizer,
+                device="cpu"
+            )
     
     def _create_standard_prompt(self, query: str, context: str) -> str:
         """

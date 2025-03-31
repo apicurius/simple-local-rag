@@ -1,0 +1,43 @@
+{
+    "device": "cpu",
+    "device_map": "auto",
+    "load_in_8bit": false,
+    "load_in_4bit": false,
+    "pdf_path": "human-nutrition-text.pdf",
+    "chunk_size": 10,
+    "min_token_length": 30,
+    "chunk_overlap": 3,
+    "embedding_model_name": "BAAI/bge-large-en-v1.5",
+    "embeddings_filename": "nutrition_text_embeddings.json",
+    "use_embedding_cache": true,
+    "use_vector_db": false,
+    "vector_db_config": {
+        "index_type": "flat",
+        "n_clusters": 100
+    },
+    "llm_model_name": "google/gemma-3-4b-it",
+    "llm_context_window": 8192,
+    "max_new_tokens": 1024,
+    "temperature": 0.3,
+    "top_p": 0.95,
+    "top_k": 50,
+    "streaming": false,
+    "num_chunks_to_retrieve": 10,
+    "minimum_score_threshold": 0.1,
+    "ensure_diverse_chunks": true,
+    "diversity_threshold": 0.85,
+    "use_hybrid_search": true,
+    "semantic_weight": 0.65,
+    "keyword_weight": 0.35,
+    "use_query_expansion": true,
+    "expansion_factor": 2,
+    "use_reranking": true,
+    "rerank_model_name": "BAAI/bge-reranker-large",
+    "rerank_top_k": 5,
+    "prompt_strategy": "cot_few_shot",
+    "prompt_templates": {
+        "standard": "Answer the following question directly and factually based solely on the provided information. If the information doesn't contain the answer, say \"I don't have enough information to answer this question.\"\n\nInformation:\n{context}\n\nQuestion: {query}\n\nAnswer:",
+        "few_shot": "Answer the following question directly and factually. DO NOT use phrases like \"the context,\" \"the information provided,\" or \"based on the document.\" If you don't have enough information, say \"I don't have enough information to answer this question.\"\n\nInformation:\n{context}\n\nHere are examples of good answers:\nQuestion: What are macronutrients?\nAnswer: Macronutrients are nutrients that the body requires in large amounts, specifically carbohydrates, proteins, and fats. They provide energy and are essential for various bodily functions.\n\nQuestion: What's the nutritional difference between white and brown rice?\nAnswer: Brown rice contains more fiber, vitamins, and minerals than white rice because it retains the bran and germ layers that are removed in white rice processing. Brown rice has a lower glycemic index and provides more B vitamins, iron, and magnesium.\n\nQuestion: What are the best protein sources for longevity?\nAnswer: I don't have enough information to answer this question.\n\nQuestion: {query}\n\nAnswer:",
+        "cot_few_shot": "Answer directly and factually without referring to sources. Present your answer as established knowledge.\n\nInformation:\n{context}\n\nQuestion: {query}\n\nI'll analyze this systematically:\n\nFirst, let me identify the key facts about both protein types:\n- Animal proteins: [list specific nutrients, qualities, and characteristics]\n- Plant proteins: [list specific nutrients, qualities, and characteristics]\n\nNext, I'll note important differences:\n- Digestibility: [compare digestibility]\n- Nutrient profiles: [compare nutrients]\n- Health considerations: [note any health benefits or concerns]\n\nExamples of good answers:\nQuestion: What's the difference between saturated and unsaturated fats?\nAnswer: Saturated fats have no double bonds between carbon atoms and tend to be solid at room temperature. They're found mainly in animal products and can raise LDL cholesterol levels. Unsaturated fats contain at least one double bond and are typically liquid at room temperature. They're found in plant oils, nuts, seeds, and fish, and can help improve cholesterol levels and reduce inflammation.\n\nQuestion: Which cooking oil has the highest smoke point?\nAnswer: Refined avocado oil has the highest smoke point at approximately 520\u00b0F (270\u00b0C), making it excellent for high-heat cooking methods like deep-frying and searing. Refined safflower, sunflower, and peanut oils also have high smoke points above 450\u00b0F.\n\nFinal Answer:"
+    }
+}
