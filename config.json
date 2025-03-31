@@ -1,0 +1,32 @@
+{
+    "device": "cpu",
+    "device_map": "auto",
+    "load_in_8bit": false,
+    "load_in_4bit": false,
+    "pdf_path": "human-nutrition-text.pdf",
+    "chunk_size": 10,
+    "min_token_length": 30,
+    "chunk_overlap": 3,
+    "embedding_model_name": "BAAI/bge-large-en-v1.5",
+    "embeddings_filename": "nutrition_text_embeddings.json",
+    "llm_model_name": "google/gemma-3-4b-it",
+    "llm_context_window": 8192,
+    "max_new_tokens": 1024,
+    "temperature": 0.3,
+    "num_chunks_to_retrieve": 10,
+    "minimum_score_threshold": 0.05,
+    "use_hybrid_search": true,
+    "semantic_weight": 0.65,
+    "keyword_weight": 0.35,
+    "use_query_expansion": true,
+    "expansion_factor": 2,
+    "use_reranking": true,
+    "rerank_model_name": "BAAI/bge-reranker-large",
+    "rerank_top_k": 5,
+    "prompt_strategy": "cot_few_shot",
+    "prompt_templates": {
+        "standard": "Answer the following question based on the provided context. If the context doesn't contain the answer, say \"I don't have enough information to answer this question.\"\n\nContext:\n{context}\n\nQuestion: {query}\n\nAnswer:",
+        "few_shot": "Answer the following question based on the provided context. If the context doesn't contain the answer, say \"I don't have enough information to answer this question.\"\n\nContext:\n{context}\n\nHere are some examples of good answers:\nQuestion: What are macronutrients?\nAnswer: Macronutrients are nutrients that the body requires in large amounts, specifically carbohydrates, proteins, and fats. They provide energy and are essential for various bodily functions.\n\nQuestion: How much vitamin C should an adult consume daily?\nAnswer: According to dietary guidelines, adults should consume about 75-90mg of vitamin C per day, with slightly higher amounts recommended for pregnant women and smokers.\n\nNow answer this question:\nQuestion: {query}\n\nAnswer:",
+        "cot": "Answer the following question based on the provided context. Use step-by-step reasoning to analyze the information and provide a comprehensive answer. If the context doesn't contain the answer, say \"I don't have enough information to answer this question.\"\n\nContext:\n{context}\n\nQuestion: {query}\n\nLet me think through this step-by-step:\n1) First, I'll identify the key information in the context related to the question.\n2) Then, I'll analyze how this information addresses the question.\n3) Finally, I'll formulate a clear and concise answer.\n\nFinal Answer:"
+    }
+}
