@@ -75,6 +75,40 @@ class EmbeddingManager:
             print("[WARNING] Vector database requested but FAISS is not available. Falling back to standard search.")
             self.use_vector_db = False
         
+    def get_embedding_for_text(self, text: str) -> np.ndarray:
+        """
+        Get embedding for a single text string, using cache if available
+        
+        Args:
+            text: Text to embed
+            
+        Returns:
+            np.ndarray: Embedding vector
+        """
+        # Initialize cache if not exists
+        if not hasattr(self, 'embedding_cache'):
+            self.embedding_cache = {}
+            
+        # Check if already in cache
+        text_hash = hash(text)
+        if text_hash in self.embedding_cache:
+            return self.embedding_cache[text_hash]
+            
+        # Not in cache, compute it
+        try:
+            embedding = self.model.encode(text, convert_to_tensor=False, normalize_embeddings=True)
+            # Store in cache
+            self.embedding_cache[text_hash] = embedding
+            return embedding
+        except Exception as e:
+            print(f"[WARNING] Error embedding text: {e}")
+            # Return zeros as fallback with correct dimension
+            if hasattr(self.model, 'get_sentence_embedding_dimension'):
+                dim = self.model.get_sentence_embedding_dimension()
+            else:
+                dim = 768  # Default for most models
+            return np.zeros(dim)
+    
     def embed_texts(self, 
                    texts: List[str], 
                    batch_size: int = 32,

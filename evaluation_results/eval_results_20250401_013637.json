@@ -1,0 +1,121 @@
+{
+  "overall": {
+    "retrieval": {
+      "precision": 0.08,
+      "recall": 0.13333333333333333,
+      "f1": 0.1,
+      "mrr": 0.2,
+      "latency": 1.9580318927764893
+    },
+    "generation": {
+      "rouge1": 0.42113709310079805,
+      "rouge2": 0.16874654188087027,
+      "rougeL": 0.3342320588158859,
+      "semantic_similarity": 0.862025260925293,
+      "latency": 17.937320375442503
+    },
+    "total_latency": 19.895352268218993
+  },
+  "per_question": [
+    {
+      "question": "What are the main macronutrients in a healthy diet?",
+      "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+      "generated_answer": "Carbohydrates, lipids (fats), and proteins.",
+      "retrieval": {
+        "precision": 0.4,
+        "recall": 0.6666666666666666,
+        "f1": 0.5,
+        "mrr": 1.0,
+        "latency": 3.3531370162963867
+      },
+      "generation": {
+        "rouge1": 0.2962962962962963,
+        "rouge2": 0.0,
+        "rougeL": 0.22222222222222218,
+        "latency": 19.71439480781555,
+        "semantic_similarity": 0.7708966732025146
+      },
+      "total_latency": 23.06753182411194
+    },
+    {
+      "question": "What is the difference between saturated and unsaturated fats?",
+      "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+      "generated_answer": "Saturated fats are typically solid at room temperature and are found in foods like butter and meat. Unsaturated fats are usually liquid at room temperature and are found in foods like olive oil and vegetable oils.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.4512922763824463
+      },
+      "generation": {
+        "rouge1": 0.6075949367088608,
+        "rouge2": 0.38961038961038963,
+        "rougeL": 0.5569620253164557,
+        "latency": 15.306034803390503,
+        "semantic_similarity": 0.9337470531463623
+      },
+      "total_latency": 16.75732707977295
+    },
+    {
+      "question": "How does the digestibility of plant proteins compare to animal proteins?",
+      "reference_answer": "Animal-based proteins are generally more digestible than plant-based proteins. Plant proteins can be less digestible because some are contained in plant cell walls that pass through the digestive tract unabsorbed.",
+      "generated_answer": "Animal proteins are generally completely broken down during digestion, while plant-based proteins are not fully digested due to their presence in plant cell walls. This means plant proteins are less digestible than animal proteins.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.6214230060577393
+      },
+      "generation": {
+        "rouge1": 0.5671641791044776,
+        "rouge2": 0.3076923076923077,
+        "rougeL": 0.41791044776119407,
+        "latency": 15.183680057525635,
+        "semantic_similarity": 0.9544655084609985
+      },
+      "total_latency": 16.805103063583374
+    },
+    {
+      "question": "What are the health benefits of broccoli?",
+      "reference_answer": "Broccoli is rich in vitamins, minerals, fiber, and antioxidants. It contains compounds that may help reduce inflammation, improve immune function, and protect against certain types of cancer.",
+      "generated_answer": "The text does not provide any information about the health benefits of broccoli. It discusses the general role of nutrients in immune system function and the consequences of deficiencies in various vitamins and minerals. It mentions that a variety of healthy foods is best for obtaining minerals and vitamins.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.7359871864318848
+      },
+      "generation": {
+        "rouge1": 0.3157894736842105,
+        "rouge2": 0.02702702702702703,
+        "rougeL": 0.18421052631578946,
+        "latency": 19.97492814064026,
+        "semantic_similarity": 0.8085211515426636
+      },
+      "total_latency": 21.710915327072144
+    },
+    {
+      "question": "What is the role of vitamin D in the body?",
+      "reference_answer": "Vitamin D helps the body absorb calcium, which is essential for bone health. It also plays important roles in immune function, cell growth, and reducing inflammation.",
+      "generated_answer": "Vitamin D regulates blood calcium levels and is critical for bone health. It\u2019s involved in maintaining bone tissue and preventing diseases like rickets and osteomalacia. It is synthesized in the skin upon exposure to sunlight and is found in foods like salmon.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.6283199787139893
+      },
+      "generation": {
+        "rouge1": 0.3188405797101449,
+        "rouge2": 0.11940298507462685,
+        "rougeL": 0.2898550724637681,
+        "latency": 19.507564067840576,
+        "semantic_similarity": 0.8424959182739258
+      },
+      "total_latency": 21.135884046554565
+    }
+  ]
+}

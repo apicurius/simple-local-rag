@@ -1,0 +1,32 @@
+[
+  {
+    "id": "Q1",
+    "question": "What are the main macronutrients in a healthy diet?",
+    "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+    "relevant_chunks": ["405", "406", "407"]
+  },
+  {
+    "id": "Q2",
+    "question": "What is the difference between saturated and unsaturated fats?",
+    "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+    "relevant_chunks": ["450", "451", "452"]
+  },
+  {
+    "id": "Q3",
+    "question": "How does the digestibility of plant proteins compare to animal proteins?",
+    "reference_answer": "Animal-based proteins are generally more digestible than plant-based proteins. Plant proteins can be less digestible because some are contained in plant cell walls that pass through the digestive tract unabsorbed.",
+    "relevant_chunks": ["457", "458", "459"]
+  },
+  {
+    "id": "Q4",
+    "question": "What are the health benefits of broccoli?",
+    "reference_answer": "Broccoli is rich in vitamins, minerals, fiber, and antioxidants. It contains compounds that may help reduce inflammation, improve immune function, and protect against certain types of cancer.",
+    "relevant_chunks": ["495", "496"]
+  },
+  {
+    "id": "Q5",
+    "question": "What is the role of vitamin D in the body?",
+    "reference_answer": "Vitamin D helps the body absorb calcium, which is essential for bone health. It also plays important roles in immune function, cell growth, and reducing inflammation.",
+    "relevant_chunks": ["550", "551", "552"]
+  }
+]

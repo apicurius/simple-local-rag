@@ -1,0 +1,58 @@
+{
+  "overall": {
+    "retrieval": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "mrr": 0.0,
+      "latency": 2.194506049156189
+    },
+    "generation": {
+      "rouge1": 0.3762183235867447,
+      "rouge2": 0.16363636363636364,
+      "rougeL": 0.3391812865497076,
+      "latency": 31.60788905620575
+    },
+    "total_latency": 33.80239510536194
+  },
+  "per_question": [
+    {
+      "question": "What are the main macronutrients in a healthy diet?",
+      "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+      "generated_answer": "Carbohydrates, lipids (fats), and proteins.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 2.4796040058135986
+      },
+      "generation": {
+        "rouge1": 0.2962962962962963,
+        "rouge2": 0.0,
+        "rougeL": 0.22222222222222218,
+        "latency": 37.380369901657104
+      },
+      "total_latency": 39.8599739074707
+    },
+    {
+      "question": "What is the difference between saturated and unsaturated fats?",
+      "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+      "generated_answer": "Saturated fats are typically solid at room temperature, while unsaturated fats are usually liquid.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.9094080924987793
+      },
+      "generation": {
+        "rouge1": 0.456140350877193,
+        "rouge2": 0.32727272727272727,
+        "rougeL": 0.456140350877193,
+        "latency": 25.835408210754395
+      },
+      "total_latency": 27.744816303253174
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "overall": {
+    "retrieval": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "mrr": 0.0,
+      "latency": 2.429727077484131
+    },
+    "generation": {
+      "rouge1": 0.4392873886544772,
+      "rouge2": 0.16883116883116883,
+      "rougeL": 0.37693389592123766,
+      "latency": 37.296521067619324
+    },
+    "total_latency": 39.726248145103455
+  },
+  "per_question": [
+    {
+      "question": "What are the main macronutrients in a healthy diet?",
+      "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+      "generated_answer": "Carbohydrates, lipids (fats), and proteins.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 2.5136539936065674
+      },
+      "generation": {
+        "rouge1": 0.2962962962962963,
+        "rouge2": 0.0,
+        "rougeL": 0.22222222222222218,
+        "latency": 37.05610013008118
+      },
+      "total_latency": 39.569754123687744
+    },
+    {
+      "question": "What is the difference between saturated and unsaturated fats?",
+      "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+      "generated_answer": "Saturated fats are typically solid at room temperature and are found in foods like butter and meat. Unsaturated fats are typically liquid at room temperature and are found in foods like olive oil and vegetable oils.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 2.3458001613616943
+      },
+      "generation": {
+        "rouge1": 0.5822784810126581,
+        "rouge2": 0.33766233766233766,
+        "rougeL": 0.5316455696202531,
+        "latency": 37.53694200515747
+      },
+      "total_latency": 39.882742166519165
+    }
+  ]
+}

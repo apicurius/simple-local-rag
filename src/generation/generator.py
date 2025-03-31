@@ -344,6 +344,10 @@ Reasoning step by step:"""
         # Extract generated text
         answer = self._extract_final_answer(output[0]["generated_text"], prompt)
         
+        # Apply additional answer extraction if configured
+        if CONFIG.get("extract_answer", False):
+            answer = self._extract_answer(answer, CONFIG.get("prompt_strategy", "standard"))
+        
         return answer
         
     def _generate_streaming(self, prompt: str, max_new_tokens: int, temperature: float, top_p: float, top_k: int) -> str:
@@ -397,4 +401,59 @@ Reasoning step by step:"""
         # Extract answer using the same function as non-streaming
         answer = self._extract_final_answer(full_text, prompt)
         
-        return answer 
+        # Apply additional answer extraction if configured
+        if CONFIG.get("extract_answer", False):
+            answer = self._extract_answer(answer, CONFIG.get("prompt_strategy", "standard"))
+        
+        return answer
+        
+    def _extract_final_answer(self, output_text: str, prompt: str) -> str:
+        """
+        Extract the final answer from the generated text
+        
+        Args:
+            output_text: Full generated text
+            prompt: Original prompt
+            
+        Returns:
+            str: Extracted answer
+        """
+        # For simplicity, remove the prompt portion
+        answer = output_text[len(prompt):].strip()
+        
+        # Remove any special tokens or markers
+        answer = answer.replace("<s>", "").replace("</s>", "").strip()
+        
+        return answer
+        
+    def _extract_answer(self, full_text: str, prompt_strategy: str = "standard") -> str:
+        """
+        Extract the final clean answer from generated text based on prompt strategy
+        
+        Args:
+            full_text: The full generated text including reasoning
+            prompt_strategy: Which prompt strategy was used
+            
+        Returns:
+            str: Clean extracted answer
+        """
+        # Different extraction strategies based on prompt type
+        if prompt_strategy == "cot" or prompt_strategy == "cot_few_shot":
+            # For chain-of-thought, look for "Final Answer:" marker
+            if "Final Answer:" in full_text:
+                return full_text.split("Final Answer:")[1].strip()
+                
+            # Alternative markers
+            for marker in ["Therefore,", "In conclusion,", "To summarize,", "In summary,"]:
+                if marker in full_text:
+                    parts = full_text.split(marker)
+                    if len(parts) > 1:
+                        return marker + parts[1].strip()
+            
+            # If we can't find markers, return the last paragraph
+            paragraphs = [p for p in full_text.split("\n\n") if p.strip()]
+            if paragraphs:
+                return paragraphs[-1].strip()
+                
+        # For standard and few-shot prompts, just return the full answer
+        return full_text.strip()

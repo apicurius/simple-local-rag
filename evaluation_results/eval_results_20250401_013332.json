@@ -1,0 +1,61 @@
+{
+  "overall": {
+    "retrieval": {
+      "precision": 0.2,
+      "recall": 0.3333333333333333,
+      "f1": 0.25,
+      "mrr": 0.5,
+      "latency": 4.385992169380188
+    },
+    "generation": {
+      "rouge1": 0.5121212121212121,
+      "rouge2": 0.1923076923076923,
+      "rougeL": 0.39621212121212124,
+      "semantic_similarity": 0.8647274971008301,
+      "latency": 19.37349796295166
+    },
+    "total_latency": 23.759490132331848
+  },
+  "per_question": [
+    {
+      "question": "What are the main macronutrients in a healthy diet?",
+      "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+      "generated_answer": "Carbohydrates, lipids (fats), and proteins are the three classes of macronutrients.",
+      "retrieval": {
+        "precision": 0.4,
+        "recall": 0.6666666666666666,
+        "f1": 0.5,
+        "mrr": 1.0,
+        "latency": 7.178711175918579
+      },
+      "generation": {
+        "rouge1": 0.4242424242424242,
+        "rouge2": 0.0,
+        "rougeL": 0.24242424242424246,
+        "latency": 23.180593967437744,
+        "semantic_similarity": 0.8020267486572266
+      },
+      "total_latency": 30.359305143356323
+    },
+    {
+      "question": "What is the difference between saturated and unsaturated fats?",
+      "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+      "generated_answer": "Saturated fats are typically solid at room temperature and are found in foods like butter and meat, while unsaturated fats are usually liquid at room temperature and are found in foods like olive oil and vegetable oils.",
+      "retrieval": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "mrr": 0.0,
+        "latency": 1.5932731628417969
+      },
+      "generation": {
+        "rouge1": 0.6,
+        "rouge2": 0.3846153846153846,
+        "rougeL": 0.55,
+        "latency": 15.566401958465576,
+        "semantic_similarity": 0.9274282455444336
+      },
+      "total_latency": 17.159675121307373
+    }
+  ]
+}

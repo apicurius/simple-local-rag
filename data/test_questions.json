@@ -1,0 +1,62 @@
+[
+  {
+    "id": "Q1",
+    "question": "What are the main macronutrients in a healthy diet?",
+    "reference_answer": "The main macronutrients in a healthy diet are carbohydrates, proteins, and fats. These provide energy and are essential for various bodily functions.",
+    "relevant_chunks": ["405", "406", "407"]
+  },
+  {
+    "id": "Q2",
+    "question": "What is the difference between saturated and unsaturated fats?",
+    "reference_answer": "Saturated fats have no double bonds between carbon atoms and are typically solid at room temperature, found mainly in animal products. Unsaturated fats contain at least one double bond and are usually liquid at room temperature, found mainly in plant oils and fish.",
+    "relevant_chunks": ["450", "451", "452"]
+  },
+  {
+    "id": "Q3",
+    "question": "How does the digestibility of plant proteins compare to animal proteins?",
+    "reference_answer": "Animal-based proteins are generally more digestible than plant-based proteins. Plant proteins can be less digestible because some are contained in plant cell walls that pass through the digestive tract unabsorbed.",
+    "relevant_chunks": ["457", "458", "459"]
+  },
+  {
+    "id": "Q4",
+    "question": "What are the health benefits of broccoli?",
+    "reference_answer": "Broccoli is rich in vitamins, minerals, fiber, and antioxidants. It contains compounds that may help reduce inflammation, improve immune function, and protect against certain types of cancer.",
+    "relevant_chunks": ["495", "496"]
+  },
+  {
+    "id": "Q5",
+    "question": "What is the role of vitamin D in the body?",
+    "reference_answer": "Vitamin D helps the body absorb calcium, which is essential for bone health. It also plays important roles in immune function, cell growth, and reducing inflammation.",
+    "relevant_chunks": ["550", "551", "552"]
+  },
+  {
+    "id": "Q6",
+    "question": "How much protein should an average adult consume daily?",
+    "reference_answer": "An average adult should consume approximately 0.8 grams of protein per kilogram of body weight daily, which translates to about 46-56 grams for most people.",
+    "relevant_chunks": ["415", "416", "417"]
+  },
+  {
+    "id": "Q7",
+    "question": "What are antioxidants and their role in nutrition?",
+    "reference_answer": "Antioxidants are compounds that help protect cells from damage caused by free radicals. They play a crucial role in reducing oxidative stress and may help prevent chronic diseases.",
+    "relevant_chunks": ["520", "521"]
+  },
+  {
+    "id": "Q8",
+    "question": "Compare the nutritional benefits of plant proteins vs animal proteins",
+    "reference_answer": "Animal-based proteins are typically complete proteins with all essential amino acids and are highly digestible. They often contain more B vitamins, iron, zinc, and vitamin D. Plant proteins may lack some essential amino acids but provide more fiber, antioxidants, and phytonutrients while containing no cholesterol and generally less saturated fat.",
+    "relevant_chunks": ["453", "454", "457", "459"]
+  },
+  {
+    "id": "Q9",
+    "question": "What are the symptoms of vitamin B12 deficiency?",
+    "reference_answer": "Symptoms of vitamin B12 deficiency include fatigue, weakness, constipation, loss of appetite, weight loss, numbness and tingling in the extremities, balance problems, confusion, poor memory, and soreness of the mouth or tongue.",
+    "relevant_chunks": ["560", "561"]
+  },
+  {
+    "id": "Q10",
+    "question": "How does fiber contribute to digestive health?",
+    "reference_answer": "Fiber contributes to digestive health by adding bulk to stool, preventing constipation, and promoting regular bowel movements. It also feeds beneficial gut bacteria, which produce compounds that support colon health and may reduce inflammation.",
+    "relevant_chunks": ["480", "481", "482"]
+  }
+]
