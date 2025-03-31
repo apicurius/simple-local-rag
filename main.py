@@ -5,7 +5,7 @@ Command-line interface for the Simple Local RAG project
 import os
 import sys
 import argparse
-from src.config import CONFIG, setup_device, save_config, load_config
+from src.config import CONFIG, setup_device, save_config, load_config, create_config_profile, load_config_profile
 from src.rag_pipeline import RAGPipeline
 
 def parse_args():
@@ -37,6 +37,8 @@ def parse_args():
                             help="Run in interactive mode")
     query_parser.add_argument("--adaptive", action="store_true",
                            help="Use adaptive query strategy in interactive mode")
+    query_parser.add_argument("--stream", action="store_true",
+                           help="Enable streaming generation (token-by-token output)")
     
     # Config command
     config_parser = subparsers.add_parser("config", help="Configure the pipeline")
@@ -52,6 +54,8 @@ def parse_args():
     config_parser.add_argument("--pdf", type=str, help="Set PDF path")
     config_parser.add_argument("--load-8bit", action="store_true", help="Enable 8-bit quantization")
     config_parser.add_argument("--load-4bit", action="store_true", help="Enable 4-bit quantization")
+    config_parser.add_argument("--profile", type=str, help="Load a configuration profile")
+    config_parser.add_argument("--save-profile", type=str, help="Save current configuration as a named profile")
     
     # RAG strategy command
     strategy_parser = subparsers.add_parser("strategy", help="Configure RAG strategy")
@@ -138,11 +142,13 @@ def run_query(args):
                 if adaptive_mode:
                     answer, context = pipeline.query_adaptive(query, top_k=args.top_k, 
                                                   include_scores=args.include_scores, 
-                                                  include_context=not args.hide_context)
+                                                  include_context=not args.hide_context,
+                                                  streaming=args.stream)
                 else:
                     answer = pipeline.query(query, top_k=args.top_k, 
                                          include_scores=args.include_scores,
-                                         include_context=not args.hide_context)
+                                         include_context=not args.hide_context,
+                                         streaming=args.stream)
                 
                 print(f"\nAnswer: {answer}")
                 if not args.hide_context:
@@ -161,14 +167,25 @@ def run_query(args):
             print("Error: Query text is required.")
             return None
         
+        # Configure streaming based on arguments
+        CONFIG["streaming"] = args.stream
+        
         if args.hide_context:
             # Get only the answer, not the context
-            answer = pipeline.query(args.query, top_k=args.top_k, include_scores=args.include_scores, include_context=False)
-            print(f"{answer}")
+            answer = pipeline.query(args.query, top_k=args.top_k, 
+                                   include_scores=args.include_scores, 
+                                   include_context=False,
+                                   streaming=args.stream)
+            if not args.stream:  # Only print answer if not streaming (streaming already prints)
+                print(f"{answer}")
         else:
             # Get both answer and context
-            answer, context = pipeline.query(args.query, top_k=args.top_k, include_scores=args.include_scores, include_context=True)
-            print(f"Answer: {answer}")
+            answer, context = pipeline.query(args.query, top_k=args.top_k, 
+                                           include_scores=args.include_scores, 
+                                           include_context=True,
+                                           streaming=args.stream)
+            if not args.stream:  # Only print answer if not streaming
+                print(f"Answer: {answer}")
             print("\nContext used for generation:")
             print(context)
     
@@ -180,7 +197,19 @@ def config_pipeline(args):
         # Show current configuration
         print("Current configuration:")
         for key, value in CONFIG.items():
-            print(f"  {key}: {value}")
+            if key != "prompt_templates":  # Skip showing templates (too verbose)
+                print(f"  {key}: {value}")
+            else:
+                print(f"  {key}: [Template definitions available]")
+    
+    # Load configuration profile if requested
+    if args.profile:
+        profile_config = load_config_profile(args.profile)
+        if profile_config:
+            CONFIG.update(profile_config)
+            print(f"[INFO] Configuration profile '{args.profile}' loaded")
+            # Re-setup device after loading profile
+            setup_device()
     
     # Update configuration based on arguments
     if args.device:
@@ -223,10 +252,16 @@ def config_pipeline(args):
     
     # Load configuration if requested
     if args.load:
-        CONFIG.update(load_config(args.load))
+        loaded_config = load_config(args.load)
+        CONFIG.update(loaded_config)
         print(f"[INFO] Configuration loaded from {args.load}")
         # Re-setup device after loading config
         setup_device()
+        
+    # Save as profile if requested
+    if args.save_profile:
+        create_config_profile(args.save_profile, CONFIG)
+        print(f"[INFO] Current configuration saved as profile '{args.save_profile}'")
 
 def config_strategy(args):
     """Configure RAG strategy"""

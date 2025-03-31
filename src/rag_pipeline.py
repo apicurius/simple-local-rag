@@ -230,13 +230,14 @@ class RAGPipeline:
         """
         return self.retriever.format_results(results, include_scores=include_scores)
     
-    def generate(self, query: str, context: str) -> str:
+    def generate(self, query: str, context: str, streaming: bool = None) -> str:
         """
         Generate an answer for a query given a context
         
         Args:
             query: Query string
             context: Context string
+            streaming: Whether to use streaming generation (overrides config)
             
         Returns:
             str: Generated answer
@@ -244,7 +245,7 @@ class RAGPipeline:
         if self.generator is None:
             self.setup_generation()
             
-        return self.generator.generate(query, context)
+        return self.generator.generate(query, context, streaming=streaming)
     
     def set_rag_strategy(self, 
                         use_reranking: bool = None, 
@@ -351,7 +352,7 @@ class RAGPipeline:
         return self.query(query, top_k=top_k, include_scores=include_scores)
     
     def query(self, query: str, top_k: int = None, include_scores: bool = False, 
-             include_context: bool = True) -> Union[str, Tuple[str, str]]:
+             include_context: bool = True, streaming: bool = None) -> Union[str, Tuple[str, str]]:
         """
         Process a query and generate a response
         
@@ -360,6 +361,7 @@ class RAGPipeline:
             top_k: Number of top chunks to retrieve
             include_scores: Whether to include similarity scores in context
             include_context: Whether to return context along with the answer
+            streaming: Whether to use streaming generation (overrides config)
             
         Returns:
             str or Tuple[str, str]: Generated answer (and context if include_context=True)
@@ -373,8 +375,8 @@ class RAGPipeline:
         # Format context
         context = self.retriever.format_results(results, include_scores=include_scores)
         
-        # Generate answer
-        answer = self.generate(query, context)
+        # Generate answer with streaming option
+        answer = self.generate(query, context, streaming=streaming)
         
         if include_context:
             return answer, context
@@ -382,7 +384,7 @@ class RAGPipeline:
             return answer
             
     def query_adaptive(self, query: str, top_k: int = None, include_scores: bool = False,
-                       include_context: bool = True) -> Union[str, Tuple[str, str]]:
+                       include_context: bool = True, streaming: bool = None) -> Union[str, Tuple[str, str]]:
         """
         Adaptively process a query based on its complexity
         
@@ -391,6 +393,7 @@ class RAGPipeline:
             top_k: Number of top chunks to retrieve
             include_scores: Whether to include similarity scores in context
             include_context: Whether to return context along with the answer
+            streaming: Whether to use streaming generation (overrides config)
             
         Returns:
             str or Tuple[str, str]: Generated answer (and context if include_context=True)
@@ -410,8 +413,8 @@ class RAGPipeline:
         # Format context
         context = self.retriever.format_results(results, include_scores=include_scores)
         
-        # Generate answer with appropriate strategy
-        answer = self.generate(query, context)
+        # Generate answer with appropriate strategy and streaming option
+        answer = self.generate(query, context, streaming=streaming)
         
         if include_context:
             return answer, context

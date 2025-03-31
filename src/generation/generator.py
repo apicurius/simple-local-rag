@@ -249,13 +249,14 @@ Reasoning step by step:"""
         
         return answer
     
-    def generate(self, query: str, context: str) -> str:
+    def generate(self, query: str, context: str, streaming: bool = None) -> str:
         """
         Generate an answer for a query based on the provided context
         
         Args:
             query: Query string
             context: Context string
+            streaming: Whether to enable streaming generation (overrides config)
             
         Returns:
             str: Generated answer
@@ -279,6 +280,29 @@ Reasoning step by step:"""
         top_p = CONFIG.get("top_p", 0.9)
         top_k = CONFIG.get("top_k", 50)
         
+        # Determine streaming mode
+        use_streaming = streaming if streaming is not None else CONFIG.get("streaming", False)
+        
+        # Generate answer
+        if use_streaming:
+            return self._generate_streaming(prompt, max_new_tokens, temperature, top_p, top_k)
+        else:
+            return self._generate_standard(prompt, max_new_tokens, temperature, top_p, top_k)
+    
+    def _generate_standard(self, prompt: str, max_new_tokens: int, temperature: float, top_p: float, top_k: int) -> str:
+        """
+        Standard non-streaming generation
+        
+        Args:
+            prompt: The prompt to use
+            max_new_tokens: Maximum number of tokens to generate
+            temperature: Temperature for generation
+            top_p: Top-p sampling parameter
+            top_k: Top-k sampling parameter
+            
+        Returns:
+            str: Generated answer
+        """
         # Generate answer
         with torch.no_grad():
             output = self.pipe(
@@ -292,5 +316,58 @@ Reasoning step by step:"""
         
         # Extract generated text
         answer = self._extract_final_answer(output[0]["generated_text"], prompt)
+        
+        return answer
+        
+    def _generate_streaming(self, prompt: str, max_new_tokens: int, temperature: float, top_p: float, top_k: int) -> str:
+        """
+        Streaming generation with token-by-token output
+        
+        Args:
+            prompt: The prompt to use
+            max_new_tokens: Maximum number of tokens to generate
+            temperature: Temperature for generation
+            top_p: Top-p sampling parameter
+            top_k: Top-k sampling parameter
+            
+        Returns:
+            str: Generated answer
+        """
+        # Import necessary for TextIteratorStreamer
+        from transformers import TextIteratorStreamer
+        from threading import Thread
+        
+        # Create a streamer
+        streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
+        
+        # Generate in a separate thread
+        generation_kwargs = {
+            "input_ids": self.tokenizer(prompt, return_tensors="pt").input_ids.to(self.device),
+            "max_new_tokens": max_new_tokens,
+            "temperature": temperature,
+            "top_p": top_p,
+            "top_k": top_k,
+            "do_sample": temperature > 0,
+            "streamer": streamer,
+        }
+        
+        thread = Thread(target=self.model.generate, kwargs=generation_kwargs)
+        thread.start()
+        
+        # Collect streamed output
+        generated_text = []
+        for token in streamer:
+            generated_text.append(token)
+            # Print token in real-time (with flush to ensure immediate display)
+            print(token, end="", flush=True)
+        
+        # Print a newline at the end
+        print()
+        
+        # Join all tokens into the final text
+        full_text = prompt + "".join(generated_text)
+        
+        # Extract answer using the same function as non-streaming
+        answer = self._extract_final_answer(full_text, prompt)
         
         return answer 

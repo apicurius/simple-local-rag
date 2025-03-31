@@ -314,8 +314,84 @@ class Retriever:
         # Sort by reranker scores (blended)
         reranked_results = sorted(results, key=lambda x: x["rerank_score"], reverse=True)
         
-        # Return top-k results
-        return reranked_results[:top_k]
+        # Perform diversification if enabled
+        if CONFIG.get("ensure_diverse_chunks", False):
+            diverse_results = self._diversify_results(reranked_results, top_k)
+            return diverse_results
+        else:
+            # Return top-k results without diversification
+            return reranked_results[:top_k]
+            
+    def _diversify_results(self, results: List[Dict[str, Any]], top_k: int = None) -> List[Dict[str, Any]]:
+        """
+        Ensure diversity in the results by avoiding too similar chunks
+        
+        Args:
+            results: List of results to diversify
+            top_k: Number of diverse results to return
+            
+        Returns:
+            List[Dict]: List of diversified results
+        """
+        if top_k is None:
+            top_k = CONFIG.get("rerank_top_k", 5)
+            
+        if len(results) <= 1:
+            return results
+            
+        # Get threshold from config
+        diversity_threshold = CONFIG.get("diversity_threshold", 0.85)
+        
+        # Always keep the first (highest scoring) result
+        diverse_results = [results[0]]
+        
+        # Process the remaining results
+        for candidate in results[1:]:
+            # Check if this result is too similar to any already selected result
+            too_similar = False
+            for selected in diverse_results:
+                # Simple text similarity using Jaccard index
+                similarity = self._compute_text_similarity(
+                    candidate["sentence_chunk"], 
+                    selected["sentence_chunk"]
+                )
+                if similarity > diversity_threshold:
+                    too_similar = True
+                    break
+                    
+            # Add the result if it's not too similar to any selected result
+            if not too_similar:
+                diverse_results.append(candidate)
+                
+            # Stop if we have enough diverse results
+            if len(diverse_results) >= top_k:
+                break
+                
+        return diverse_results
+        
+    def _compute_text_similarity(self, text1: str, text2: str) -> float:
+        """
+        Compute similarity between two text strings using Jaccard index
+        
+        Args:
+            text1: First text
+            text2: Second text
+            
+        Returns:
+            float: Similarity score between 0 and 1
+        """
+        # Tokenize into words (simple approach)
+        set1 = set(text1.lower().split())
+        set2 = set(text2.lower().split())
+        
+        # Compute Jaccard index: intersection / union
+        intersection = len(set1.intersection(set2))
+        union = len(set1.union(set2))
+        
+        if union == 0:
+            return 0.0
+            
+        return intersection / union
     
     def search(self, query: str, top_k: int = None) -> List[Dict[str, Any]]:
         """
